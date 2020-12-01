@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 
+import functools
+import operator
 import os
 import sys
 
 ROOT = os.path.dirname(__file__)
 
 
-def main():
+def main(count):
     expenses = load_expenses()
-    value_1, value_2 = find_pair_with_sum(expenses, 2020)
-    if value_1 is None:
+    values = find_numbers_with_sum(expenses, 2020, count)
+    if values[0] is None:
         sys.exit("No match.")
-    print(value_1 * value_2)
+    product = functools.reduce(operator.mul, values)
+    print(product)
 
 
 def load_expenses():
@@ -24,12 +27,22 @@ def open_data(filename):
     return open(path)
 
 
-def find_pair_with_sum(values, target):
-    for value in values:
-        if target - value in values:
-            return value, target - value
-    return None, None
+def find_numbers_with_sum(values, target, count):
+    if count == 1:
+        if target in values:
+            return [target]
+        else:
+            return [None]
+    else:
+        for value in values:
+            rest = values.difference({value})
+            result = find_numbers_with_sum(rest, target - value, count - 1)
+            if result[0] is not None:
+                return [value] + result
+
+        return [None] + result
 
 
 if __name__ == "__main__":
-    main()
+    count = int(sys.argv[1])
+    main(count)
