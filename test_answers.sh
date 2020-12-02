@@ -27,7 +27,8 @@ check() {
 
 check "./day01.py 2" 877971
 check "./day01.py 3" 203481432
-check "./day02.py" 564
+check "./day02.py 1" 564
+check "./day02.py 2" 325
 
 echo totals
 echo checks $checks
