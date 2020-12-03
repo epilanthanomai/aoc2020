@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
 import files
+import functools
+import operator
+import sys
 
 
-def main():
+def main(paths):
     terrain = load_terrain()
-    trees = count_trees_in_path(terrain, 3, 1)
-    print(trees)
+    tree_counts = [count_trees_in_path(terrain, *path) for path in paths]
+    product = functools.reduce(operator.mul, tree_counts)
+    print(product)
 
 
 def load_terrain():
@@ -32,4 +36,16 @@ def follow_path(terrain, right, down):
 
 
 if __name__ == "__main__":
-    main()
+    problem_paths = {
+        "1": [(3, 1)],
+        "2": [
+            (1, 1),
+            (3, 1),
+            (5, 1),
+            (7, 1),
+            (1, 2),
+        ],
+    }
+    problem = sys.argv[1]
+    paths = problem_paths[problem]
+    main(paths)
