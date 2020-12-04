@@ -31,6 +31,7 @@ check "./day02.py 1" 564
 check "./day02.py 2" 325
 check "./day03.py 1" 240
 check "./day03.py 2" 2832009600
+check "./day04.py" 213
 
 echo totals
 echo checks $checks
