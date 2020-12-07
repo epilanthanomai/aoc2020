@@ -33,7 +33,8 @@ check "./day03.py 1" 240
 check "./day03.py 2" 2832009600
 check "./day04.py 0" 213
 check "./day04.py 1" 147
-check "./day05.py" 866
+check "./day05.py max" 866
+check "./day05.py open" 583
 
 echo totals
 echo checks $checks

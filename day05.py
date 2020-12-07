@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
+import sys
 import files
 
 
-def main():
+def main(find_seat):
     with files.open_data("day05-boardingpasses.txt") as passes_file:
         passes = [parse_pass_seat(line.strip()) for line in passes_file]
     seat_ids = [seat_id(row, column) for (row, column) in passes]
-    print(max(seat_ids))
+    print(find_seat(seat_ids))
 
 
 ROW_PATH_TO_BIT = {
@@ -32,5 +33,18 @@ def seat_id(row, column):
     return row * 8 + column
 
 
+def find_open_seat(seat_ids):
+    sorted_ids = sorted(seat_ids)
+    last = sorted_ids[0]
+    for seat in sorted_ids[1:]:
+        if seat - last > 1:
+            return last + 1
+        last = seat
+
+
 if __name__ == "__main__":
-    main()
+    find_seat = {
+        "max": max,
+        "open": find_open_seat,
+    }[sys.argv[1]]
+    main(find_seat)
