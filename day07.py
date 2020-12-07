@@ -2,16 +2,17 @@
 
 import collections
 import re
+import sys
 
 import files
 
 START_BAG = "shiny gold"
 
 
-def main():
+def main(op):
     with files.open_data("day07-luggagerules.txt") as rules_file:
         rules = [parse_rule(line.strip()) for line in rules_file]
-    print(len(find_nested_containers(rules, START_BAG)))
+    print(op(rules, START_BAG))
 
 
 RULE_RE = re.compile(r"(.*?) bags contain (.*?)\.")
@@ -29,7 +30,7 @@ def parse_rule(line):
         return container, [(int(m.group(1)), m.group(2)) for m in matched_contents]
 
 
-def find_nested_containers(rules, bag):
+def count_nested_containers(rules, bag):
     containers = invert_rules(rules)
     container_batch = containers[bag]
     result = container_batch
@@ -37,7 +38,7 @@ def find_nested_containers(rules, bag):
         container_step = set.union(*[containers[b] for b in container_batch])
         container_batch = container_step.difference(result)
         result = result.union(container_step)
-    return result
+    return len(result)
 
 
 def invert_rules(rules):
@@ -48,5 +49,24 @@ def invert_rules(rules):
     return result
 
 
+def count_nested_contents(rules, bag):
+    content_map = {container: content for container, content in rules}
+    return _count_nested_contents(content_map, bag)
+
+
+def _count_nested_contents(content_map, bag):
+    direct_contents = content_map[bag]
+    return sum(
+        [
+            count * (1 + _count_nested_contents(content_map, content))
+            for count, content in direct_contents
+        ]
+    )
+
+
 if __name__ == "__main__":
-    main()
+    op = {
+        "1": count_nested_containers,
+        "2": count_nested_contents,
+    }[sys.argv[1]]
+    main(op)
