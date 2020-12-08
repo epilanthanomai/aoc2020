@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import files
 import functools
 import operator
 import sys
@@ -14,7 +13,7 @@ def main(paths):
 
 
 def load_terrain():
-    with files.open_data("day03-trees.txt") as terrain_file:
+    with open("data/day03-trees.txt") as terrain_file:
         return [line.strip() for line in terrain_file]
 
 

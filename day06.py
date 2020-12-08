@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-import files
 
 
 def main(combine):
-    with files.open_data("day06-answergroups.txt") as answer_file:
+    with open("data/day06-answergroups.txt") as answer_file:
         answer_groups = list(parse_answer_groups(answer_file))
     group_answers = [get_group_answers(group, combine) for group in answer_groups]
     print(sum(len(group) for group in group_answers))

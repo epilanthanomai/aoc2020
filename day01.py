@@ -5,8 +5,6 @@ import operator
 import os
 import sys
 
-from files import open_data
-
 
 def main(count):
     expenses = load_expenses()
@@ -18,7 +16,7 @@ def main(count):
 
 
 def load_expenses():
-    with open_data("day01-expenses.txt") as expenses_file:
+    with open("data/day01-expenses.txt") as expenses_file:
         return {int(line) for line in expenses_file}
 
 

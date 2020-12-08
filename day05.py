@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-import files
 
 
 def main(find_seat):
-    with files.open_data("day05-boardingpasses.txt") as passes_file:
+    with open("data/day05-boardingpasses.txt") as passes_file:
         passes = [parse_pass_seat(line.strip()) for line in passes_file]
     seat_ids = [seat_id(row, column) for (row, column) in passes]
     print(find_seat(seat_ids))

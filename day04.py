@@ -3,12 +3,10 @@
 import sys
 import re
 
-import files
-
 
 def main(validate_values):
     validate = all_values_valid if validate_values else required_fields_present
-    with files.open_data("day04-passports.txt") as passport_file:
+    with open("data/day04-passports.txt") as passport_file:
         valid = len(
             [
                 chunk

@@ -4,7 +4,6 @@ import collections
 import re
 import sys
 
-from files import open_data
 
 PASSWORD_LINE_RE = re.compile(
     r"(?P<first_number>\d+)-(?P<second_number>\d+)\s+(?P<char>\S):\s+(?P<password>.*)"
@@ -19,7 +18,7 @@ PasswordLine2 = collections.namedtuple(
 
 
 def main(parse_password_line, check_password_line):
-    with open_data("day02-passwords.txt") as password_file:
+    with open("data/day02-passwords.txt") as password_file:
         lines_valid = check_all_passwords(
             password_file, parse_password_line, check_password_line
         )

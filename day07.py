@@ -4,13 +4,12 @@ import collections
 import re
 import sys
 
-import files
 
 START_BAG = "shiny gold"
 
 
 def main(op):
-    with files.open_data("day07-luggagerules.txt") as rules_file:
+    with open("data/day07-luggagerules.txt") as rules_file:
         rules = [parse_rule(line.strip()) for line in rules_file]
     print(op(rules, START_BAG))
 
