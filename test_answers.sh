@@ -39,6 +39,7 @@ check "./day06.py any" 6662
 check "./day06.py all" 3382
 check "./day07.py 1" 242
 check "./day07.py 2" 176035
+check "./day08.py" 1548
 
 echo totals
 echo checks $checks
