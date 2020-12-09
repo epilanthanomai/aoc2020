@@ -3,12 +3,18 @@
 import collections
 import itertools
 import operator
+import sys
 
 
-def main():
+def main(find_range):
     with open("data/day09-windowsums.txt") as input_file:
-        numbers = (int(line) for line in input_file)
-        print(first_not_in_windowed_sums(numbers, 25))
+        numbers = [int(line) for line in input_file]
+    target_number = first_not_in_windowed_sums(numbers, 25)
+    if find_range:
+        match_range = find_range_with_sum(numbers, target_number)
+        print(min(match_range) + max(match_range))
+    else:
+        print(target_number)
 
 
 def first_not_in_windowed_sums(iterable, window_size):
@@ -51,5 +57,24 @@ def windowed_combinations_with(iterator, window_size, op):
         yield s.keys()
 
 
+def find_range_with_sum(numbers, target):
+    start = 0
+    end = 0
+    total = 0
+
+    while True:
+        if total < target:
+            if end == len(numbers):
+                return
+            total += numbers[end]
+            end += 1
+        else:
+            total -= numbers[start]
+            start += 1
+        if total == target:
+            return numbers[start:end]
+
+
 if __name__ == "__main__":
-    main()
+    find_range = bool(int(sys.argv[1]))
+    main(find_range)
