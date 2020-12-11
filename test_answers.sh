@@ -45,6 +45,7 @@ check "./day09.py 0" 15353384
 check "./day09.py 1" 2466556
 check "./day10.py" 2312
 check "./day10.py paths" 12089663946752
+check "./day11.py" 2251
 
 echo totals
 echo checks $checks
