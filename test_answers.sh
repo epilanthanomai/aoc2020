@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 checks=0
 errors=0
@@ -47,6 +47,7 @@ check "./day10.py" 2312
 check "./day10.py paths" 12089663946752
 check "./day11.py near" 2251
 check "./day11.py far" 2019
+check "./day12.py" 362
 
 echo totals
 echo checks $checks
