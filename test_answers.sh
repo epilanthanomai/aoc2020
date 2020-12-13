@@ -49,6 +49,7 @@ check "./day11.py near" 2251
 check "./day11.py far" 2019
 check "./day12.py direct" 362
 check "./day12.py waypoint" 29895
+check "./day13.py" 5257
 
 echo totals
 echo checks $checks
