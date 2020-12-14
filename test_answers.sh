@@ -51,6 +51,7 @@ check "./day12.py direct" 362
 check "./day12.py waypoint" 29895
 check "./day13.py wait" 5257
 check "./day13.py sequence" 538703333547789  # lol >1bn years
+check "./day14.py" 13865835758282
 
 echo totals
 echo checks $checks
