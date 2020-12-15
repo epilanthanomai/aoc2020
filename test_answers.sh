@@ -53,7 +53,8 @@ check "./day13.py wait" 5257
 check "./day13.py sequence" 538703333547789  # lol >1bn years
 check "./day14.py 1" 13865835758282
 check "./day14.py 2" 4195339838136
-check "./day15.py" 371
+check "./day15.py 2020" 371
+check "./day15.py 30000000" 352
 
 echo totals
 echo checks $checks

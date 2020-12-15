@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
+import sys
 from itertools import islice
 
 STARTING_SEQUENCE = [9, 3, 1, 0, 8, 4]
-YEAR = 2020
 
 
-def main():
+def main(index):
     sequence = age_or_zero(STARTING_SEQUENCE)
-    print(iterindex(sequence, YEAR - 1))
+    print(iterindex(sequence, index))
 
 
 def age_or_zero(starting_sequence):
@@ -36,4 +36,5 @@ def iterindex(i, n):
 
 
 if __name__ == "__main__":
-    main()
+    index = int(sys.argv[1]) - 1  # input index is 1-based
+    main(index)
