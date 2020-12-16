@@ -55,6 +55,7 @@ check "./day14.py 1" 13865835758282
 check "./day14.py 2" 4195339838136
 check "./day15.py 2020" 371
 check "./day15.py 30000000" 352
+check "./day16.py" 23036
 
 echo totals
 echo checks $checks
