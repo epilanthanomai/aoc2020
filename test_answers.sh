@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 checks=0
 errors=0
@@ -55,7 +55,8 @@ check "./day14.py 1" 13865835758282
 check "./day14.py 2" 4195339838136
 check "./day15.py 2020" 371
 check "./day15.py 30000000" 352
-check "./day16.py" 23036
+check "./day16.py numbers" 23036
+check "./day16.py departures" 1909224687553
 
 echo totals
 echo checks $checks
