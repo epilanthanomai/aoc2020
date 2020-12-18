@@ -59,7 +59,8 @@ check "./day16.py numbers" 23036
 check "./day16.py departures" 1909224687553
 check "./day17.py 3" 322
 check "./day17.py 4" 2000
-check "./day18.py" 8298263963837
+check "./day18.py 0" 8298263963837
+check "./day18.py 1" 145575710203332
 
 echo totals
 echo checks $checks
