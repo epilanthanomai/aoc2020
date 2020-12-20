@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 
+import sys
 from collections import namedtuple
 
+PATCH = {
+    8: [[42], [42, 8]],
+    11: [[42, 31], [42, 11, 31]],
+}
 
-def main():
+
+def main(patch):
     rules, messages = load_rules("data/day19-seamonster.txt")
+    if patch:
+        rules.update(PATCH)
     matches = [message for message in messages if match_any_rule(message, rules)]
     print(len(matches))
 
@@ -60,4 +68,5 @@ def match_any_rule(message, rules):
 
 
 if __name__ == "__main__":
-    main()
+    patch = len(sys.argv) > 1 and sys.argv[1] == "patch"
+    main(patch)
