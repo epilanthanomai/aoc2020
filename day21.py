@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import re
+import sys
+from copy import deepcopy
 
 CONTENTS_RE = re.compile(r"([a-z ]+) \(contains ([a-z, ]+)\)")
 
 
-def main():
+def main(problem):
     contents = load_contents("data/day21-allergens.txt")
     allergen_map = identify_allergens(contents)
-    print(count_safe_ingredients(contents, allergen_map))
+    print(problem(contents, allergen_map))
 
 
 def load_contents(file_name):
@@ -43,5 +45,39 @@ def count_safe_ingredients(contents, allergen_map):
     )
 
 
+def get_dangerous_list(contents, allergen_map):
+    unidentified_allergens = deepcopy(allergen_map)
+    identified_allergens = {}
+
+    while unidentified_allergens:
+        singleton_allergens = {
+            allergen: list(ingredients)[0]
+            for (allergen, ingredients) in unidentified_allergens.items()
+            if len(ingredients) == 1
+        }
+        assert len(singleton_allergens) > 0
+        identified_allergens.update(singleton_allergens)
+        for allergen in singleton_allergens.keys():
+            del unidentified_allergens[allergen]
+        identified_ingredients = set(singleton_allergens.values())
+        for allergen in unidentified_allergens:
+            unidentified_allergens[allergen] = unidentified_allergens[
+                allergen
+            ].difference(identified_ingredients)
+        assert not any(
+            len(ingredients) == 0 for ingredients in unidentified_allergens.values()
+        )
+
+    allergens_list = list(identified_allergens.items())
+    dangerous_ingredients = [
+        ingredient for (allergen, ingredient) in sorted(allergens_list)
+    ]
+    return ",".join(dangerous_ingredients)
+
+
 if __name__ == "__main__":
-    main()
+    problem = {
+        "safe": count_safe_ingredients,
+        "dangerous": get_dangerous_list,
+    }[sys.argv[1]]
+    main(problem)
