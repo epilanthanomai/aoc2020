@@ -2,17 +2,22 @@
 
 import operator
 import re
+import sys
 from collections import defaultdict
 from functools import reduce
 
 
 DIMENSION = 12
+SEA_MONSTER = """\
+                  # 
+#    ##    ##    ###
+ #  #  #  #  #  #   """.splitlines()
 
 
-def main():
+def main(problem):
     tiles = load_tiles("data/day20-tiles.txt")
     layout = lay_out_tiles(tiles)
-    print(product(get_corner_ids(layout)))
+    print(problem(layout, tiles))
 
 
 def load_tiles(file_name):
@@ -20,6 +25,10 @@ def load_tiles(file_name):
         tile_data = tile_file.read()
     tile_strings = tile_data.strip().split("\n\n")
     return dict(parse_tile(tile_string) for tile_string in tile_strings)
+
+
+def corner_product(layout, tiles):
+    return product(get_corner_ids(layout))
 
 
 def get_corner_ids(layout):
@@ -274,5 +283,102 @@ def find_tiles_with_constraint(side, direction, index):
     ]
 
 
+def water_roughness(layout, tiles):
+    raw_image = combine_tiles(layout, tiles)
+    image_candidates = [
+        rotate_image(raw_image, flip, orientation)
+        for flip in (False, True)
+        for orientation in range(4)
+    ]
+    sea_monsters = [
+        list(find_sea_monsters(candidate)) for candidate in image_candidates
+    ]
+    matches = [
+        (image, monsters)
+        for (image, monsters) in zip(image_candidates, sea_monsters)
+        if len(monsters) > 0
+    ]
+    assert len(matches) == 1
+    image, monster_offsets = matches[0]
+
+    monster_overlay = defaultdict(bool)
+    for offset in monster_offsets:
+        blit_monster(monster_overlay, *offset)
+
+    return len(
+        list(
+            (r, c)
+            for r, row in enumerate(image)
+            for c, pixel in enumerate(row)
+            if pixel == "#" and not monster_overlay[r, c]
+        )
+    )
+
+
+def combine_tiles(layout, tiles):
+    raw_printable = [
+        [
+            rotate_image(tiles[tile_id], flipped, orientation)
+            for tile_id, flipped, orientation in row
+        ]
+        for row in layout
+    ]
+    cropped = [[crop_tile(tile) for tile in row] for row in raw_printable]
+    return paste_tiles(cropped)
+
+
+def rotate_image(tile, flipped, orientation):
+    if flipped:
+        tile = ["".join(reversed(row)) for row in tile]
+    while orientation > 0:
+        tile = [
+            "".join(tile[row][-1 - column] for row in range(len(tile)))
+            for column in range(len(tile))
+        ]
+        orientation -= 1
+    return tile
+
+
+def crop_tile(tile):
+    return [row[1:-1] for row in tile[1:-1]]
+
+
+def paste_tiles(tiles):
+    return ["".join(line) for row in tiles for line in zip(*row)]
+
+
+def find_sea_monsters(image):
+    for row in range(len(image) - len(SEA_MONSTER)):
+        for column in range(len(image[0]) - len(SEA_MONSTER[0])):
+            window = crop_window(
+                image, row, column, len(SEA_MONSTER), len(SEA_MONSTER[0])
+            )
+            if match_sea_monster(window):
+                yield row, column
+
+
+def crop_window(image, row, column, height, width):
+    return [image[row + r][column : column + width] for r in range(height)]
+
+
+def match_sea_monster(window):
+    for row in range(len(SEA_MONSTER)):
+        for column in range(len(SEA_MONSTER[0])):
+            if SEA_MONSTER[row][column] == "#" and window[row][column] != "#":
+                return False
+    return True
+
+
+def blit_monster(image, row, column):
+    for r, monster_row in enumerate(SEA_MONSTER):
+        for c, monster_pixel in enumerate(monster_row):
+            if monster_pixel == "#":
+                image[row + r, column + c] = True
+
+
 if __name__ == "__main__":
-    main()
+    problem = {
+        "corners": corner_product,
+        "roughness": water_roughness,
+    }[sys.argv[1]]
+    main(problem)
