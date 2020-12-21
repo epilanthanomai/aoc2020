@@ -65,6 +65,7 @@ check "./day19.py" 156
 check "./day19.py patch" 363
 check "./day20.py corners" 28057939502729
 check "./day20.py roughness" 2489
+check "./day21.py" 2125
 
 echo totals
 echo checks $checks
