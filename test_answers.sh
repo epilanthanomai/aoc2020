@@ -68,6 +68,7 @@ check "./day20.py roughness" 2489
 check "./day21.py safe" 2125
 check "./day21.py dangerous" phc,spnd,zmsdzh,pdt,fqqcnm,lsgqf,rjc,lzvh
 check "./day22.py" 33694
+check "./day22.py recursive" 31835
 
 echo totals
 echo checks $checks
