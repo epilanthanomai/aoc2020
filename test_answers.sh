@@ -71,6 +71,7 @@ check "./day22.py" 33694
 check "./day22.py recursive" 31835
 check "./day23.py" 72496583
 # check "./day23.py extended" 41785843847  # 33sec
+check "./day24.py" 322
 
 echo totals
 echo checks $checks
