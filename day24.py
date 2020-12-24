@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from collections import defaultdict
 from dataclasses import dataclass
 
@@ -22,11 +23,12 @@ DIRECTIONS = {
 }
 
 
-def main():
+def main(iterations):
     tile_paths = load_tiles("data/day24-tiles.txt")
-    tiles = defaultdict(bool)
+    tiles = set()
     flip_tiles(tiles, tile_paths)
-    print(len([t for (t, flipped) in tiles.items() if flipped]))
+    tiles = run_updates(tiles, iterations)
+    print(len(tiles))
 
 
 def load_tiles(file_name):
@@ -63,9 +65,34 @@ def flip_tiles(tiles, paths):
 def flip_tile(tiles, path):
     target_position = sum(
         (CartesianPosition(*DIRECTIONS[move]) for move in path), CartesianPosition(0, 0)
-    )
-    tiles[target_position.freeze()] = not tiles[target_position.freeze()]
+    ).freeze()
+    if target_position in tiles:
+        tiles.remove(target_position)
+    else:
+        tiles.add(target_position)
+
+
+def run_updates(tiles, iterations):
+    for _ in range(iterations):
+        tiles = update_once(tiles)
+    return tiles
+
+
+UPDATE_BLACK = {
+    (True, 1),
+    (True, 2),
+    (False, 2),
+}
+
+
+def update_once(tiles):
+    neighbors = defaultdict(int)
+    for (row, column) in tiles:
+        for (d_row, d_column) in DIRECTIONS.values():
+            neighbors[row + d_row, column + d_column] += 1
+    return set(t for (t, n) in neighbors.items() if (t in tiles, n) in UPDATE_BLACK)
 
 
 if __name__ == "__main__":
-    main()
+    iterations = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+    main(iterations)
