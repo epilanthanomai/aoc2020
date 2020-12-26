@@ -73,6 +73,7 @@ check "./day23.py" 72496583
 # check "./day23.py extended" 41785843847  # 33sec
 check "./day24.py" 322
 check "./day24.py 100" 3831
+check "./day25.py" 16902792
 
 echo totals
 echo checks $checks
